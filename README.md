@@ -1,3 +1,5 @@
+![PhishTix Banner](assets/phishtix-banner.png)
+
 # PhishTix
 
 **Don’t Take the Bait.**  
