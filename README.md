@@ -5,7 +5,7 @@
 **Don’t Take the Bait.**  
 AI-powered phishing detection and awareness for users, students, and analysts.
 
-## Concept Demonstration
+## ## How PhishTix Works
 
 PhishTix is designed as a lightweight interface where users can submit suspicious messages for analysis.
 
