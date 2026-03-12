@@ -14,6 +14,10 @@ PhishTix is a cybersecurity project focused on helping people identify, understa
 
 PhishTix was created as part of my growing cybersecurity portfolio to demonstrate practical thinking around phishing detection, user protection, and security communication.
 
+## Educational Purpose
+
+PhishTix is a cybersecurity portfolio project designed to explore phishing detection, user awareness, and analyst-style investigation workflows. The project is intended for learning, demonstration, and portfolio review by recruiters, educators, and cybersecurity professionals.
+
 ## Why This Project Matters
 
 Phishing remains one of the most common and effective attack methods used against individuals and organizations. Many users still struggle to tell the difference between legitimate communication and malicious impersonation, urgency scams, fake support messages, credential theft attempts, and other social engineering tactics.
