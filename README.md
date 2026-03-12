@@ -5,6 +5,24 @@
 **Don’t Take the Bait.**  
 AI-powered phishing detection and awareness for users, students, and analysts.
 
+## Concept Demonstration
+
+PhishTix is designed as a lightweight interface where users can submit suspicious messages for analysis.
+
+Example inputs may include:
+
+• suspicious emails  
+• text messages (smishing)  
+• phone scam transcripts (vishing)  
+• suspicious links or screenshots  
+
+The system would analyze these inputs and present:
+
+• phishing indicators  
+• risk score  
+• explanation of detected patterns  
+• recommended user action
+
 ## Overview
 
 PhishTix is a cybersecurity project focused on helping people identify, understand, and respond to phishing attempts more effectively. The project is designed with a dual purpose:
