@@ -1,4 +1,4 @@
-![PhishTix Banner](assets-new/phishtix-banner.png)
+![PhishTix Banner](phishtix-banner.png)
 
 # PhishTix
 
