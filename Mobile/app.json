@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "PhishTix",
+    "slug": "phishtix-mobile",
+    "scheme": "phishtix",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
