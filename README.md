@@ -5,6 +5,42 @@
 **Don’t Take the Bait.**  
 AI-powered phishing detection and awareness for users, students, and analysts.
 
+## Status
+![Version](https://img.shields.io/badge/version-v0.1.0-blue)
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![Flask](https://img.shields.io/badge/flask-3.1-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
+> v0.1.0 is live. Flask-based phishing analyzer with risk scoring, indicator detection, and analysis history.
+
+## Quickstart
+git clone https://github.com/Lenox2Linux/phishtix.git
+cd phishtix
+pip install flask
+python3 app.py
+Open your browser to http://127.0.0.1:5000
+
+## API Reference
+### POST /analyze
+Input: form field message (string)
+Output: JSON with risk_score (0-10), confidence (Low/Medium/High), indicators (list), recommendation (string)
+### GET /history
+Returns the last 10 analyses with timestamps.
+
+## Detection Coverage (v0.1.0)
+| Indicator Type | Examples |
+|---|---|
+| Urgency language | urgent, immediately, suspended, act now |
+| Credential requests | password, SSN, credit card, bank account |
+| Suspicious URLs | http://, bit.ly, tinyurl, shortened links |
+| Impersonation cues | dear customer, IT department, helpdesk |
+| Threat language | legal action, permanently closed, terminated |
+
+## Roadmap
+- [x] v0.1.0 — Core analyzer, risk scoring, history endpoint
+- [ ] v0.2.0 — Email header parsing, sender/domain mismatch detection
+- [ ] v0.3.0 — Triage report export (JSON download)
+- [ ] v0.4.0 — Screenshot/image input support
+
 ## ## How PhishTix Works
 
 PhishTix is designed as a lightweight interface where users can submit suspicious messages for analysis.
