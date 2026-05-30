@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishTix</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: min(800px, 95vw);
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .tagline {
+            margin-top: 0.4rem;
+            color: #93c5fd;
+            font-size: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 170px;
+            margin-top: 1rem;
+            background: #0b1220;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 0.9rem;
+            box-sizing: border-box;
+            resize: vertical;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        button {
+            margin-top: 1rem;
+            background: #2563eb;
+            color: #f8fafc;
+            border: none;
+            border-radius: 8px;
+            padding: 0.7rem 1.2rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #0b1220;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .risk-line {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: 999px;
+            padding: 0.3rem 0.65rem;
+            color: #0f172a;
+        }
+
+        .badge-low {
+            background: #22c55e;
+        }
+
+        .badge-medium {
+            background: #facc15;
+        }
+
+        .badge-high {
+            background: #ef4444;
+            color: #fff1f2;
+        }
+
+        ul {
+            margin-top: 0.7rem;
+            padding-left: 1.2rem;
+        }
+
+        li {
+            margin-bottom: 0.35rem;
+        }
+
+        .recommendation {
+            margin-top: 0.9rem;
+            color: #bfdbfe;
+        }
+
+        .error {
+            margin-top: 0.8rem;
+            color: #fda4af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PhishTix</h1>
+        <p class="tagline">Don't Take the Bait.</p>
+
+        <form id="analyze-form">
+            <textarea
+                id="message"
+                name="message"
+                placeholder="Paste a suspicious email, text message, or link here..."
+                required
+            ></textarea>
+            <button type="submit">Analyze</button>
+        </form>
+
+        <p id="error" class="error"></p>
+
+        <section id="results" class="results">
+            <div class="risk-line">
+                <strong>Risk Score:</strong>
+                <span id="risk-badge" class="badge badge-low">Low</span>
+                <span id="risk-score-value"></span>
+                <span id="confidence-value"></span>
+            </div>
+
+            <h3>Detected Indicators</h3>
+            <ul id="indicator-list"></ul>
+
+            <p id="recommendation" class="recommendation"></p>
+        </section>
+    </div>
+
+    <script>
+        const form = document.getElementById("analyze-form");
+        const errorElement = document.getElementById("error");
+        const resultsSection = document.getElementById("results");
+        const riskBadge = document.getElementById("risk-badge");
+        const riskScoreValue = document.getElementById("risk-score-value");
+        const confidenceValue = document.getElementById("confidence-value");
+        const indicatorList = document.getElementById("indicator-list");
+        const recommendation = document.getElementById("recommendation");
+
+        function updateBadge(confidence) {
+            riskBadge.classList.remove("badge-low", "badge-medium", "badge-high");
+
+            if (confidence === "High") {
+                riskBadge.classList.add("badge-high");
+            } else if (confidence === "Medium") {
+                riskBadge.classList.add("badge-medium");
+            } else {
+                riskBadge.classList.add("badge-low");
+            }
+
+            riskBadge.textContent = confidence;
+        }
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            errorElement.textContent = "";
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("/analyze", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("Analysis failed. Please try again.");
+                }
+
+                const data = await response.json();
+                updateBadge(data.confidence);
+                riskScoreValue.textContent = `${data.risk_score}/10`;
+                confidenceValue.textContent = `(${data.confidence} confidence)`;
+
+                indicatorList.innerHTML = "";
+                if (Array.isArray(data.indicators) && data.indicators.length > 0) {
+                    data.indicators.forEach((item) => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = item;
+                        indicatorList.appendChild(listItem);
+                    });
+                } else {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = "No strong phishing indicators detected.";
+                    indicatorList.appendChild(listItem);
+                }
+
+                recommendation.textContent = `Recommendation: ${data.recommendation}`;
+                resultsSection.style.display = "block";
+            } catch (error) {
+                errorElement.textContent = error.message;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+Python 3.11+ and Flask framework.
+Keep all phishing analysis logic in /backend/.
+Do not hardcode secrets; use .env for any future API keys.
+All functions must include clear docstrings.
